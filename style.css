@@ -1,0 +1,19 @@
+* {
+    box-sizing: border-box;
+}
+
+.header {
+    width: 100vw;
+    height: 15vh;
+    text-align: center;
+    padding: 50px 0px;
+}
+
+.main {
+    height: 70vh;
+    border: solid rgb(0, 0, 0) 1px;
+}
+.footer {
+    width: 100vw;
+    height: 15vh;
+}
