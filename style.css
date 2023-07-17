@@ -1,5 +1,14 @@
-* {
+*, *::after, *::before {
     box-sizing: border-box;
+}
+
+:root {
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size)*0.9);
+}
+
+body {
+    margin: 0;
 }
 
 .header {
@@ -9,10 +18,104 @@
     padding: 50px 0px;
 }
 
-.main {
+.board {
     height: 70vh;
     border: solid rgb(0, 0, 0) 1px;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
 }
+
+.cell {
+    border: 1px solid black;
+    height: var(--cell-size);
+    width: var(--cell-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+    border-top: 0;
+}
+
+.cell:nth-child(3n + 1) {
+    border-left: 0;
+}
+
+.cell:nth-child(3n) {
+    border-right: 0;
+}
+
+.cell:last-child,
+.cell:nth-child(8),
+.cell:nth-child(7) {
+    border-bottom: 0;
+}
+
+.cell.x,
+.cell.o {
+    cursor: not-allowed;
+}
+
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after {
+    content: "";
+    position: absolute;
+    width: calc(var(--mark-size) * 0.15);
+    height: var(--mark-size);
+    background-color: black;
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.o):hover::before {
+    transform: rotate(45deg);
+}
+
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::after {
+    transform: rotate(-45deg);
+}
+
+.cell.o::before,
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+
+.cell.o::before,
+.board.o .cell:not(.x):not(.o):hover::before {
+    height: var(--mark-size);
+    width: var(--mark-size);
+    background-color: black;
+}
+
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::after {
+    height: calc(var(--mark-size)*.7);
+    width: calc(var(--mark-size)*.7);
+    background-color: white;
+}
+
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after,
+.board.o .cell:not(.x):not(.o):hover::before {
+    background-color: lightgray;
+}
+
+
+
 .footer {
     width: 100vw;
     height: 15vh;
