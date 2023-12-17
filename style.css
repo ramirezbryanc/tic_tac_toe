@@ -1,14 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	/* font-size: 100%; */
+	/* font: inherit; */
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+    margin: 0;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+} /*End of Meyer Reset*/
+
 *, *::after, *::before {
     box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
 }
 
 :root {
-    --cell-size: 100px;
-    --mark-size: calc(var(--cell-size)*0.9);
+    --cell-size: 120px;
+    --mark-size: calc(var(--cell-size)*0.85);
+    --hover-color-out: #56BBF1;
+    --hover-color-in: #ffe5ad;
+    --mark-color-circle: #4D77FF;
+    --mark-color-x: red;
 }
 
-body {
-    margin: 0;
+.container-fluid {
+    background-color: #56BBF1;
 }
 
 .header {
@@ -16,21 +73,45 @@ body {
     height: 15vh;
     text-align: center;
     padding: 50px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFE5AD;
+    text-shadow: 1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;;
 }
 
+.header h1 {
+    font-size: 80px;
+}
+.main {
+    position: relative;
+    height: 63vh;
+}
 .board {
-    height: 70vh;
+    height: 100%;
     border: solid rgb(0, 0, 0) 1px;
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
-    align-content: center;
-    justify-items: center;
-    align-items: center;
+    align-content: end;
+    background-color: #FFE5AD;
+}
+
+.startCover {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+    background-color: #FFE5AD;
+    position: absolute;
+    border: solid rgb(0, 0, 0) 1px;
 }
 
 .cell {
-    border: 1px solid black;
+    border: 5px solid black;
     height: var(--cell-size);
     width: var(--cell-size);
     display: flex;
@@ -38,7 +119,7 @@ body {
     align-items: center;
     cursor: pointer;
 }
-
+/* Remove borders of cells to display a tic tac toe grid */
 .cell:first-child,
 .cell:nth-child(2),
 .cell:nth-child(3) {
@@ -57,66 +138,104 @@ body {
 .cell:nth-child(8),
 .cell:nth-child(7) {
     border-bottom: 0;
-}
+    margin-bottom: 50px;
 
+}
+.message {
+    position: absolute;
+    left: 50%;
+    margin-left: -33.5px;
+    margin-top: 50px;
+    z-index: 2;
+}
+/* Discourage clicks when a cell is filled */
 .cell.x,
 .cell.o {
     cursor: not-allowed;
 }
 
+/* board .x and empty cell hover before and after '||' */
 .cell.x::before,
 .cell.x::after,
-.board.x .cell:not(.x):not(.o):hover::before,
-.board.x .cell:not(.x):not(.o):hover::after {
+.board.x .cell:not(.x,.o):hover::before,
+.board.x .cell:not(.x,.o):hover::after {
     content: "";
     position: absolute;
     width: calc(var(--mark-size) * 0.15);
     height: var(--mark-size);
-    background-color: black;
+    background-color: var(--mark-color-x);
 }
 
+/* board x before and board x hover before '/'*/
 .cell.x::before,
-.board.x .cell:not(.x):not(.o):hover::before {
+.board.x .cell:not(.x,.o):hover::before {
     transform: rotate(45deg);
 }
 
+/* board x before and board x hover after '\' */
 .cell.x::after,
-.board.x .cell:not(.x):not(.o):hover::after {
+.board.x .cell:not(.x,.o):hover::after {
     transform: rotate(-45deg);
 }
 
+/* board o hover before and after, and board o before and after 'OO' */
 .cell.o::before,
 .cell.o::after,
-.board.o .cell:not(.x):not(.o):hover::before,
-.board.o .cell:not(.x):not(.o):hover::after {
+.board.o .cell:not(.x,.o):hover::before,
+.board.o .cell:not(.x,.o):hover::after {
     content: "";
     position: absolute;
     border-radius: 50%;
 }
 
+/* board o before and board o hover before 'O' */
 .cell.o::before,
-.board.o .cell:not(.x):not(.o):hover::before {
+.board.o .cell:not(.x,.o):hover::before {
     height: var(--mark-size);
     width: var(--mark-size);
-    background-color: black;
+    background-color: var(--mark-color-circle);
 }
+
 
 .cell.o::after,
-.board.o .cell:not(.x):not(.o):hover::after {
+.board.o .cell:not(.x,.o):hover::after {
     height: calc(var(--mark-size)*.7);
     width: calc(var(--mark-size)*.7);
-    background-color: white;
+    background-color: var(--hover-color-in);
 }
 
-.board.x .cell:not(.x):not(.o):hover::before,
-.board.x .cell:not(.x):not(.o):hover::after,
-.board.o .cell:not(.x):not(.o):hover::before {
-    background-color: lightgray;
+.board.x .cell:not(.x,.o):hover::before,
+.board.x .cell:not(.x,.o):hover::after,
+.board.o .cell:not(.x,.o):hover::before {
+    background-color: var(--hover-color-out);
 }
-
-
 
 .footer {
     width: 100vw;
-    height: 15vh;
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 2rem;
+}
+
+.btns button {
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background: #4D77FF;
+    color: #ffe5ad;
+    border-radius: 8px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 200ms,background 200ms;
+}
+
+.btns button:hover {
+    transform: translateY(-2px);
 }
